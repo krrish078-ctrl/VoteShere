@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+const ENV_API_BASE = import.meta.env.VITE_API_BASE_URL?.trim()
+const API_BASE = ENV_API_BASE || (import.meta.env.DEV ? 'http://localhost:8080' : window.location.origin)
 const ADMIN_TOKEN_KEY = 'admin_jwt'
 
 export function getAdminToken() {

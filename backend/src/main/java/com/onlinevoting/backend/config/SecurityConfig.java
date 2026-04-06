@@ -30,15 +30,21 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
     private final List<String> allowedOrigins;
+    private final List<String> allowedOriginPatterns;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             UserDetailsService userDetailsService,
-            @Value("${app.cors.allowed-origins:http://localhost:3000}") String allowedOrigins
+            @Value("${app.cors.allowed-origins:http://localhost:3000,http://localhost:5173}") String allowedOrigins,
+            @Value("${app.cors.allowed-origin-patterns:https://*.vercel.app,https://*.netlify.app}") String allowedOriginPatterns
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
         this.allowedOrigins = Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .filter(origin -> !origin.isBlank())
+                .toList();
+        this.allowedOriginPatterns = Arrays.stream(allowedOriginPatterns.split(","))
                 .map(String::trim)
                 .filter(origin -> !origin.isBlank())
                 .toList();
@@ -86,6 +92,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(allowedOrigins);
+        configuration.setAllowedOriginPatterns(allowedOriginPatterns);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Voter-Token"));
         configuration.setAllowCredentials(true);

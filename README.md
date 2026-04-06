@@ -42,6 +42,23 @@ npm run dev
 ```
 Open your browser to `http://localhost:3000`
 
+## 🌐 Deployment (Fixes "Failed to fetch")
+
+When deployed, set the frontend API base URL so the app does not call localhost:
+
+```env
+VITE_API_BASE_URL=https://your-backend-domain.com
+```
+
+Also configure backend CORS to allow your deployed frontend origin(s):
+
+```properties
+app.cors.allowed-origins=https://your-frontend-domain.com
+app.cors.allowed-origin-patterns=https://*.vercel.app,https://*.netlify.app
+```
+
+If your frontend and backend are served from the same domain, `VITE_API_BASE_URL` can be omitted and the app will use the current site origin automatically.
+
 ---
 
 ## 🗺️ URL Structure
