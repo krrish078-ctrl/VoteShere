@@ -1,0 +1,16 @@
+target/
+node_modules/
+dist/
+.env
+*.class
+*.log
+.settings/
+.project
+.classpath
+.factorypath
+.idea/
+*.iml
+.vscode/
+bin/
+out/
+.DS_Store
