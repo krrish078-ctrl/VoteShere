@@ -1,4 +1,14 @@
-const ENV_API_BASE = import.meta.env.VITE_API_BASE_URL?.trim()
+function normalizeApiBase(rawBase) {
+  if (!rawBase) return ''
+
+  let normalized = rawBase.trim().replace(/\/+$/, '')
+  if (normalized.endsWith('/api')) {
+    normalized = normalized.slice(0, -4)
+  }
+  return normalized
+}
+
+const ENV_API_BASE = normalizeApiBase(import.meta.env.VITE_API_BASE_URL)
 const API_BASE = ENV_API_BASE || (import.meta.env.DEV ? 'http://localhost:8080' : window.location.origin)
 const ADMIN_TOKEN_KEY = 'admin_jwt'
 
@@ -19,7 +29,9 @@ export function isAdminAuthenticated() {
 }
 
 async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, {
+  const requestPath = path.startsWith('/') ? path : `/${path}`
+  const requestUrl = `${API_BASE}${requestPath}`
+  const response = await fetch(requestUrl, {
     headers: {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
@@ -31,7 +43,10 @@ async function request(path, options = {}) {
   const data = contentType.includes('application/json') ? await response.json() : null
 
   if (!response.ok) {
-    const message = data?.message || `Request failed with status ${response.status}`
+    let message = data?.message || `Request failed with status ${response.status}`
+    if (response.status === 404 && requestPath.startsWith('/api/')) {
+      message = `${message}. API URL used: ${requestUrl}. Check VITE_API_BASE_URL (use backend origin without /api).`
+    }
     const error = new Error(message)
     error.status = response.status
     throw error
