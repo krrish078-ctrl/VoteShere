@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; url=/VoteShere/" />
+    <script>
+      const segments = window.location.pathname.split('/').filter(Boolean)
+      const repo = 'VoteShere'
+      const repoIndex = segments.indexOf(repo)
+      const route = repoIndex >= 0 ? '/' + segments.slice(repoIndex + 1).join('/') : '/'
+      window.location.replace('/' + repo + '/#' + route + window.location.search + window.location.hash)
+    </script>
+    <title>Redirecting</title>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>

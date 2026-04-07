@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { initStorage } from './utils/storage'
 import { isAdminAuthenticated } from './utils/storage'
@@ -25,7 +25,7 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <div className="app">
         <Routes>
           {/* Redirect root to admin */}
@@ -74,9 +74,9 @@ function App() {
                 <p style={{ color: '#6b7280' }}>
                   The page you're looking for doesn't exist.
                 </p>
-                <a href="/admin" style={{ color: '#2563eb' }}>
+                <Link to="/admin" style={{ color: '#2563eb' }}>
                   Go to Admin →
-                </a>
+                </Link>
               </div>
             }
           />
