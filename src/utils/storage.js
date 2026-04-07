@@ -31,12 +31,13 @@ export function isAdminAuthenticated() {
 async function request(path, options = {}) {
   const requestPath = path.startsWith('/') ? path : `/${path}`
   const requestUrl = `${API_BASE}${requestPath}`
+  const { headers: customHeaders = {}, ...requestOptions } = options
   const response = await fetch(requestUrl, {
+    ...requestOptions,
     headers: {
       'Content-Type': 'application/json',
-      ...(options.headers || {}),
+      ...customHeaders,
     },
-    ...options,
   })
 
   const contentType = response.headers.get('content-type') || ''
