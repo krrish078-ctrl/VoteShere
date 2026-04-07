@@ -9,7 +9,7 @@ function normalizeApiBase(rawBase) {
 }
 
 const ENV_API_BASE = normalizeApiBase(import.meta.env.VITE_API_BASE_URL)
-const API_BASE = ENV_API_BASE || (import.meta.env.DEV ? 'http://localhost:8080' : window.location.origin)
+const API_BASE = ENV_API_BASE || (import.meta.env.DEV ? 'http://localhost:8080' : '')
 const ADMIN_TOKEN_KEY = 'admin_jwt'
 
 export function getAdminToken() {
@@ -30,6 +30,9 @@ export function isAdminAuthenticated() {
 
 async function request(path, options = {}) {
   const requestPath = path.startsWith('/') ? path : `/${path}`
+  if (!API_BASE) {
+    throw new Error('Backend URL is not configured. Set VITE_API_BASE_URL to your deployed backend origin and rebuild the GitHub Pages app.')
+  }
   const requestUrl = `${API_BASE}${requestPath}`
   const { headers: customHeaders = {}, ...requestOptions } = options
   const response = await fetch(requestUrl, {
