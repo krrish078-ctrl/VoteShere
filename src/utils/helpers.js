@@ -206,7 +206,7 @@ export function clearVoterSession(electionId) {
 export function getVoterUrl(electionCode) {
   const basePath = import.meta.env.BASE_URL || '/'
   const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`
-  return `${window.location.origin}${normalizedBase}e/${electionCode}`
+  return `${window.location.origin}${normalizedBase}#/e/${electionCode}`
 }
 
 // ── Chart Data Formatting ─────────────────────────────────────

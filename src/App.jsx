@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { initStorage } from './utils/storage'
 import { isAdminAuthenticated } from './utils/storage'
@@ -25,7 +25,7 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter>
       <div className="app">
         <Routes>
           {/* Redirect root to admin */}
@@ -82,7 +82,7 @@ function App() {
           />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
