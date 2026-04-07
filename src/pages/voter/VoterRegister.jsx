@@ -70,7 +70,7 @@ export default function VoterRegister() {
 
     setIsSubmitting(true)
     try {
-      const { voter, token } = registerVoter(election.id, { name, rollNo })
+      const { voter, token } = await registerVoter(election.id, { name, rollNo })
       saveVoterSession(election.id, {
         voterId: voter.id,
         token,
